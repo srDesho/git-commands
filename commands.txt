@@ -1,0 +1,165 @@
+- Upload Projects to GitHub
+
+git init
+git add .
+git commit -m "first commit"
+git remote add origin https://github.com/NOMBRE_USUARIO/NOMBRE_PROYECTO.git
+git push -u origin master
+
+- Eliminar un commit específico y todos sus archivos
+
+1ro identificamos el id del commit anterior al que queremos eliminar 
+git log nombreRama || git log nombreRama..nombreSubramaEnLaQueQueremosEliminar, copiamos y pegamos en el siguiente comando:
+git rebase -i identificadorDelCommitAnteriorCopiado
+cambiar pick por drop
+guardar el archivo y nos devolvera a git bash
+presiona q
+git push origin nombreRama --force
+ 
+
+- Si deseas eliminar un commit reciente pero conservar los archivos en su estado actual, puedes utilizar el comando git reset con la opción --soft. Esto revertirá el commit sin afectar los archivos en tu directorio de trabajo. Aquí tienes los pasos a seguir:
+
+	1. Identifica el ID del commit que deseas eliminar utilizando el comando git log.
+	2. Una vez que tengas el ID del commit, utiliza el comando git reset --soft seguido del ID del commit para revertirlo(Commit donde quieres que se revierta el proyecto). Por ejemplo:
+		
+		git reset --soft <ID_del_commit>
+
+	Esto revertirá el commit especificado, pero mantendrá los archivos en su estado actual en tu directorio de trabajo.
+
+Después de revertir el commit localmente con git reset --hard <hash_del_commit>, necesitas empujar estos cambios al repositorio remoto en GitHub. Puedes hacerlo utilizando el comando git push --force, pero ten en cuenta que esto reescribirá la historia del repositorio remoto y puede causar problemas si otros colaboradores han trabajado en commits posteriores.
+
+Aquí están los pasos:
+
+1. Después de revertir el commit localmente, ejecuta git push --force para enviar los cambios revertidos al repositorio remoto en GitHub:
+
+git push --force
+
+2. Si estás trabajando en una rama específica, necesitarás especificarla en el comando push:
+git push --force origin <nombre_de_la_rama>
+
+Esto actualizará el historial del repositorio remoto en GitHub para reflejar los cambios revertidos. Asegúrate de comunicar estos cambios a cualquier otro colaborador que pueda verse afectado por la modificación del historial de commits.
+
+
+- Other Commands
+
+pwd: nos muestra la carpeta actual en la que nos encontramos.
+mkdir: nos permite crear carpetas, p. ej. mkdir NuevaCarpeta
+touch: nos permite crear archivos nuevos, p.ej. touch NuevoArchivo.txt
+cat: nos permite ver el contenido de un archivo, p.ej. cat NuevoArchivo.txt
+cd: nos permite cambiarnos de carpeta, p.ej. cd NuevaCarpeta.
+cd .. : nos permite regresar al directorio o carpeta anterior.
+cd o cd ~: nos lleva a la ruta del usuario.
+cd /c: nos vamos al disco C:/.
+cd -: nos lleva directamente al ultimo directorio visitado.
+ls: nos permite ver los archivos de la carpeta donde estamos actualmente.
+ls -l: Ver todos los archivos como una lista en donde incluye el usuario, grupo, permisos sobre el archivo, tamaño, fecha y hora de creación.
+ls -lh: Muestra la misma información que ls-l pero con unidades de tamaño, es decir, kb o mb.
+ls-R: muestra el contenido de todos los sudirectorios de forma recursiva.
+ls -S Ordena los resultados por tamaño de archivo.
+rm: Nos permite borrar un archivo o carpeta ej: rm NuevoArchivo.txt
+rmdir “nombre del directorio”/: borrar un directorio: Solo funciona con directorios vacíos.
+rm -r ‘nombre de la carpeta’ :me permite eliminar la carpeta y los archivos dentro de ella de forma recursiva.
+cp “nombre del archivo que quremos copiar” “nombre del directorio a donde lo queremos copiar”: nos permite copiar un archivo.
+mv “el directorio de donde queremos mover/el nombre del archivo” “el directorio hacia donde lo queremos mover”: nos permite mover un archivo o cambiar de nombre.
+clear: nos permite limpiar la pantalla.
+history: ver los últimos comandos que ejecutamos y un número especial con el que podemos volver a repetir el comando.
+
+- Renaming a file
+
+git mv OLD-FILENAME NEW-FILENAME
+
+- Common commands
+
+git init						Initialize a local Git repository
+git clone repo_url					Clone public repository
+git clone 						ssh://git@github.com/[username]/[repository-name].git	Clone private repository
+git status						Check status
+git add [file-name]					Add a file to the staging area
+git add -A						Add all new and changed files to the staging area
+git commit -m "[commit message]"			Commit changes
+git rm -r [file-name.txt]				Remove a file (or folder)
+git branch						List of branches (the asterisk denotes the current branch)
+git branch -a						List all branches (local and remote)
+git branch [branch name]				Create a new branch
+git branch -d [branch name]				Delete a branch
+git branch -D [branch name]				Delete a branch forcefully
+git push origin --delete [branch name]			Delete a remote branch
+git checkout -b [branch name]				Create a new branch and switch to it
+git checkout -b [branch name] origin/[branch name]	Clone a remote branch and switch to it
+git branch -m [old branch name] [new branch name]	Rename a local branch
+git checkout [branch name]				Switch to a branch
+git checkout -						Switch to the branch last checked out
+git checkout -- [file-name.txt]				Discard changes to a file
+git merge [branch name]					Merge a branch into the active branch
+git merge [source branch] [target branch]		Merge a branch into a target branch
+git stash						Stash changes in a dirty working directory
+git stash clear						Remove all stashed entries
+git push origin [branch name]				Push a branch to your remote repository
+git push -u origin [branch name]			Push changes to remote repository (and remember the branch)
+git push						Push changes to remote repository (remembered branch)
+git push origin --delete [branch name]			Delete a remote branch
+git pull						Update local repository to the newest commit
+git pull origin [branch name]				Pull changes from remote repository
+git remote add origin ssh://git@github.com/[username]/[repository-name].git			Add a remote repository
+git remote set-url origin ssh://git@github.com/[username]/[repository-name].git			Set a repository's origin branch to SSH
+git log												View changes
+git log --summary										View changes (detailed)
+git log --oneline										View changes (briefly)
+git diff [source branch] [target branch]							Preview changes before merging
+git diff --staged										Show changes added to stage
+git revert commitid										Revert commit changes
+git config --global user.name "your_username"							Set globally Username
+git config --global user.email "your_email_address@example.com"					Set globally Email id
+git config --global --list									Get global config
+
+- Ignorar archivos o carpetas
+Desde nuestro editor creamos un archivo dentro de la carpeta de nuestro proyecto que está siendo seguido por git
+Creamos ".gitignore", y dentro de ese archivo agregamos lo que queremos que git ignore, ejemplo:
+
+archivo.txt --------> Nunca agregará el archivo al repositorio.
+nombreCarpeta/ -----> ||	||	||	||	||
+
+Por ultimo agregamos nuestro .gitignore al commit
+
+- Recuperar commits eliminados por error:
+
+1. Verificar historial de referencias (reflog):
+
+git reflog: Muestra movimientos recientes de HEAD.
+Encontrar commit previo a rebase:
+
+2. Buscar el commit en git reflog antes del rebase (HEAD@{n}).
+Restablecer rama a commit específico:
+
+3. git reset --hard <commit-hash>: Reemplaza <commit-hash> con el hash del commit encontrado.
+
+4. Verificar estado del repositorio:
+
+git log: Revisa el historial de commits.
+Ejemplo:
+
+git reflog
+git reset --hard <commit-hash>
+git log
+
+Nota:
+Usar git reset --hard elimina cambios no confirmados. Asegúrate de que no necesitas esos cambios antes de ejecutarlo, esto no borrará ningún commit de los que hayas recuperado sólo debemos ejecutarlo si queremos que se eliminar todo lo que hay en el directorio de trabajo(Working area) y área de preparación (staging area).
+
+Por último para volver a nuestra rama principal usamos el siguiente comando
+git checkout <branch-name>   -----> ejemplo: git checkout master
+
+- Ver cambios de un archivo específico que está en el working directory.
+
+git diff <nombre_del_archivo>
+
+- Ver cambios de un archivo específico que está en el staging area.
+
+git diff --staged archivo.txt
+
+o también:
+
+git diff --cached archivo.txt
+
+- Ver lo que contiene un archivo (clases, cotrollers, etc)
+
+cat NombreDelArchivo.java
