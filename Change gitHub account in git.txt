@@ -1,0 +1,72 @@
+Para cambiar la cuenta enlazada de GitHub en tu configuración de Git y borrar las credenciales relacionadas con la cuenta anterior, puedes seguir estos pasos:
+
+### Paso 1: Cambiar la cuenta de usuario en Git
+Primero, necesitas configurar tu nombre de usuario y correo electrónico en Git para que apunten a la cuenta de GitHub correcta.
+
+1. **Verificar el usuario actual:**
+   Abre la terminal y verifica el usuario y correo configurados actualmente con el siguiente comando:
+
+   ```bash
+   git config --global user.name
+   git config --global user.email
+   ```
+
+2. **Cambiar la cuenta vinculada a Git:**
+   Para cambiar el nombre de usuario y correo electrónico globalmente (esto afecta a todos los repositorios en tu máquina):
+
+   ```bash
+   git config --global user.name "NuevoNombreDeUsuario"
+   git config --global user.email "nuevoemail@ejemplo.com"
+   ```
+
+   Si deseas cambiarlo solo para un repositorio específico, omite la opción `--global` y ejecuta estos comandos dentro del directorio del repositorio:
+
+   ```bash
+   git config user.name "NuevoNombreDeUsuario"
+   git config user.email "nuevoemail@ejemplo.com"
+   ```
+
+### Paso 2: Eliminar las credenciales de GitHub
+
+Si has guardado las credenciales de GitHub en tu sistema para evitar tener que ingresar tu usuario y contraseña en cada acción, es necesario eliminarlas. Para hacerlo, sigue estos pasos:
+
+1. **Eliminar las credenciales almacenadas en Git:**
+
+   Si estás utilizando un **administrador de credenciales** en tu sistema, como el "Git Credential Manager", puedes limpiar las credenciales de GitHub con este comando:
+
+   ```bash
+   git credential-manager-core erase
+   ```
+
+   También puedes ejecutar este comando para borrar todas las credenciales guardadas en tu sistema (para sistemas que usan "Git Credential Manager for Windows"):
+
+   ```bash
+   git credential-manager erase
+   ```
+
+2. **Eliminar las credenciales manualmente** (si usas HTTPS):
+   Si estás utilizando un sistema de autenticación basado en HTTPS (en lugar de SSH), elimina las credenciales almacenadas en el caché:
+
+   - En **Windows**:
+     Ve al **Administrador de credenciales de Windows** y elimina las entradas relacionadas con GitHub.
+
+   - En **macOS**:
+     Abre el **Acceso a Llaveros** y elimina las credenciales asociadas a GitHub.
+
+   - En **Linux**:
+     Si usas el "git-credential-cache", puedes vaciar el caché con:
+
+     ```bash
+     git credential-cache exit
+     ```
+
+### Paso 3: Verificar la nueva cuenta vinculada
+
+Para verificar que la nueva cuenta de GitHub está correctamente configurada, puedes hacer un **push** o **pull** en un repositorio de GitHub. Git te pedirá tus nuevas credenciales, y podrás ingresarlas correctamente (si usas HTTPS) o autenticarte con tu clave SSH (si usas SSH).
+
+### Resumen
+- Cambiar la cuenta de usuario y correo en Git con `git config --global`.
+- Borrar las credenciales guardadas con `git credential-manager-core erase` o manualmente en el sistema.
+- Verificar que la nueva cuenta esté configurada correctamente haciendo un push o pull.
+
+Este proceso garantiza que tu cuenta de GitHub en Git se actualice correctamente.
