@@ -1,0 +1,67 @@
+Si lo que deseas es cambiar el nombre tanto de la carpeta local como del repositorio en GitHub, aquí están los pasos detallados para hacerlo sin causar problemas de vinculación entre tu repositorio local y GitHub:
+
+Pasos para Cambiar el Nombre de la Carpeta Local y del Repositorio en GitHub:
+1. Cambiar el Nombre de la Carpeta Local
+Primero, renombra la carpeta local en tu sistema de archivos. Si la carpeta se llama restaurant-reservation-api-old, puedes renombrarla a restaurant-reservation-api (o al nombre que prefieras).
+En Windows: haz clic derecho sobre la carpeta y selecciona "Renombrar".
+En macOS/Linux: usa el comando mv en la terminal:
+bash
+Copy code
+mv restaurant-reservation-api-old restaurant-reservation-api
+2. Cambiar el Nombre del Repositorio en GitHub
+Ve a GitHub y accede a tu repositorio.
+En la página principal del repositorio, haz clic en "Settings" (en la parte superior derecha).
+Desplázate hacia abajo hasta la sección de "Repository name".
+Cambia el nombre del repositorio a restaurant-reservation-api (o al nombre que desees).
+Haz clic en "Rename" para confirmar el cambio.
+3. Actualizar el Remoto en Git (Repositorio Local)
+Ahora que el repositorio en GitHub tiene un nombre diferente, debes actualizar el remoto en tu repositorio local para que apunte al nuevo nombre en GitHub.
+
+Abre la terminal dentro de la carpeta renombrada (la que ahora se llama restaurant-reservation-api):
+
+bash
+Copy code
+cd restaurant-reservation-api
+Verifica cuál es la URL de tu repositorio remoto con el siguiente comando:
+
+bash
+Copy code
+git remote -v
+Esto mostrará algo como:
+
+perl
+Copy code
+origin  https://github.com/tu-usuario/restaurant-reservation-api-old.git (fetch)
+origin  https://github.com/tu-usuario/restaurant-reservation-api-old.git (push)
+Ahora, actualiza la URL del repositorio remoto para que apunte al nuevo nombre:
+
+bash
+Copy code
+git remote set-url origin https://github.com/tu-usuario/restaurant-reservation-api.git
+Verifica que la URL del remoto haya cambiado correctamente:
+
+bash
+Copy code
+git remote -v
+Ahora debería mostrar:
+
+perl
+Copy code
+origin  https://github.com/tu-usuario/restaurant-reservation-api.git (fetch)
+origin  https://github.com/tu-usuario/restaurant-reservation-api.git (push)
+4. Realiza un Commit (si es necesario)
+Si has hecho cambios en los archivos locales o si necesitas confirmar alguna actualización (aunque no sea necesario solo por el cambio de nombre), haz un commit y sube los cambios:
+bash
+Copy code
+git add .
+git commit -m "Renombrando la carpeta y el repositorio"
+git push origin main
+5. Verificar Todo en GitHub
+Ve nuevamente a GitHub y confirma que el repositorio ahora tiene el nombre actualizado.
+Asegúrate de que tus archivos estén correctamente reflejados en GitHub, y que todo esté funcionando bien.
+Resumen:
+Renombra tu carpeta local.
+Cambia el nombre de tu repositorio en GitHub.
+Actualiza la URL del remoto en tu repositorio local para que apunte al nuevo nombre del repositorio en GitHub.
+Haz un commit y sube los cambios, si es necesario.
+Con estos pasos, tanto la carpeta local como el repositorio en GitHub tendrán el mismo nombre sin perder la conexión entre ellos.

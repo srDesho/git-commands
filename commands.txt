@@ -163,3 +163,8 @@ git diff --cached archivo.txt
 - Ver lo que contiene un archivo (clases, cotrollers, etc)
 
 cat NombreDelArchivo.java
+
+=================================================
+- Change folder name without altering progress, ojo
+
+git mv "Review 1" review-1 
