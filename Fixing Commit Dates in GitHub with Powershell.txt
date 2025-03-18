@@ -1,0 +1,156 @@
+Aquí tienes el documento actualizado para corregir las fechas de los commits en Git, donde las fechas del **author** y el **committer** se igualarán:
+
+---
+
+## **Título: Corregir las Fechas de los Commits en Git para Mostrar Contribuciones Correctas en GitHub, usando POWERSHELL**
+
+**Concepto:**
+GitHub utiliza las fechas de los commits para calcular tu actividad y mostrar tus contribuciones en el gráfico de contribuciones. Si las fechas de los commits están desordenadas o no son correctas, esto puede afectar cómo se muestran tus contribuciones, incluso si los archivos están presentes en el repositorio. Si has tenido problemas con las fechas de tus commits, como no verlos en los cuadritos de contribuciones de GitHub, esta es una forma de corregirlas sin alterar el contenido ni el historial más de lo necesario.
+
+---
+
+### **Pasos para Corregir las Fechas de los Commits**
+
+#### **1. Verificar las Fechas del Commit y del Autor**
+
+Antes de proceder con la corrección de las fechas, es importante identificar si realmente hay un desajuste entre las fechas del *committer* (la fecha en la que se hizo el commit) y las fechas del *author* (la fecha en la que se creó el cambio). GitHub puede estar tomando la fecha del *author* al calcular tus contribuciones.
+
+Para visualizar las fechas de tus commits, puedes usar los siguientes comandos en tu terminal o PowerShell:
+
+**Ver la fecha del committer (fecha cuando se realizó el commit):**
+
+```bash
+git log --pretty=format:"%h - %an, %ad : %s" --date=format:"%Y-%m-%d %H:%M:%S"
+```
+
+Este comando te mostrará algo como esto:
+
+```bash
+00b9aba - Cristian Montaño Laime, 2025-02-04 22:36:32 : Delete Ejercicios 8, 9, 10 y 11
+314b3bb - Cristian Montaño Laime, 2025-02-03 15:51:13 : Ejercicio 7, Metodo para verificar si un nro es primo
+...
+```
+
+**Ver la fecha del autor (fecha cuando se creó el cambio):**
+
+```bash
+git log --pretty=format:"%h - %an, %ad - %cn, %cd : %s" --date=format:"%Y-%m-%d %H:%M:%S"
+```
+
+Este comando te mostrará algo como esto:
+
+```bash
+00b9aba - Cristian Montaño Laime, 2025-02-04 22:36:32 - Cristian Montaño Laime, 2025-01-23 16:58:40 : Delete Ejercicios 8, 9, 10 y 11
+314b3bb - Cristian Montaño Laime, 2025-02-03 15:51:13 - Cristian Montaño Laime, 2025-01-23 16:58:40 : Ejercicio 7, Metodo para verificar si un nro es primo
+...
+```
+
+Si ves que las fechas de *committer* y *author* son diferentes, puede ser necesario que corrijas las fechas de los commits.
+
+---
+
+#### **2. Iniciar el Rebase Interactivo**
+
+Una vez identificado el problema, vamos a corregir las fechas de los commits. Para esto, inicia un rebase interactivo. Abre PowerShell o tu terminal en el directorio del repositorio y ejecuta el siguiente comando:
+
+```bash
+git rebase -i HEAD~12
+```
+
+Este comando abrirá un editor de texto con una lista de los últimos 12 commits (puedes ajustar el número de commits según lo necesites).
+
+Verás algo como esto en el editor:
+
+```bash
+pick 00b9aba Delete Ejercicios 8, 9, 10 y 11
+pick 314b3bb Ejercicio 7, Metodo para verificar si un nro es primo
+pick ee88c73 Ejericios 5 y 6
+...
+```
+
+---
+
+#### **3. Cambiar "pick" por "edit" para los Commits a Corregir**
+
+En el archivo que se abrió, cambia "pick" por "edit" para los commits que deseas corregir. Esto le dice a Git que deseas editar la fecha de esos commits. Por ejemplo:
+
+```bash
+edit 00b9aba Delete Ejercicios 8, 9, 10 y 11
+edit 314b3bb Ejercicio 7, Metodo para verificar si un nro es primo
+edit ee88c73 Ejericios 5 y 6
+...
+```
+
+Una vez que hayas hecho estos cambios, guarda y cierra el archivo.
+
+---
+
+#### **4. Actualizar la Fecha de Cada Commit**
+
+Después de cerrar el editor, Git se detendrá en el primer commit que elegiste editar. Ahora vas a corregir la fecha de ese commit con el siguiente comando, asegurándote de igualar la fecha del *author* con la del *committer*:
+
+```bash
+$env:GIT_COMMITTER_DATE="2025-02-04 22:36:32 -0400"; git commit --amend --no-edit --date "2025-02-04 22:36:32 -0400"
+git rebase --continue
+```
+
+Cambia "2025-02-04 22:36:32 -0400" por la fecha correcta para ese commit. Asegúrate de incluir la zona horaria (en este caso, "-0400").
+
+Git continuará con el siguiente commit y te permitirá modificar su fecha. Repite el mismo paso para cada uno de los commits que elegiste editar. Por ejemplo:
+
+```bash
+$env:GIT_COMMITTER_DATE="2025-02-03 15:51:13 -0400"; git commit --amend --no-edit --date "2025-02-03 15:51:13 -0400"
+git rebase --continue
+```
+
+Nota: Reemplaza la fecha con la correcta de cada commit, basándote en lo que aparece en tu `git log`.
+
+---
+
+#### **5. Forzar el Push a GitHub**
+
+Una vez que hayas editado todas las fechas, es momento de subir los cambios a GitHub. Para esto, debes forzar el push. Esto sobrescribirá los commits en el repositorio remoto con las fechas correctas. Ejecuta:
+
+```bash
+git push --force
+```
+
+**¡Importante!** El uso de `--force` sobrescribirá el historial de commits en el repositorio remoto. Asegúrate de que todo esté correcto antes de ejecutar este comando.
+
+---
+
+### **Resumen de los Comandos:**
+
+1. **Iniciar Rebase Interactivo:**
+   ```bash
+   git rebase -i HEAD~12
+   ```
+
+2. **Cambiar "pick" por "edit" en el editor para los commits que deseas corregir.**
+
+3. **Actualizar la Fecha de Cada Commit:**
+   ```bash
+   $env:GIT_COMMITTER_DATE="FECHA_CORRECTA"; git commit --amend --no-edit --date "FECHA_CORRECTA"
+   ```
+
+4. **Continuar con el Rebase:**
+   ```bash
+   git rebase --continue
+   ```
+
+5. **Subir los Cambios a GitHub (Forzar el Push):**
+   ```bash
+   git push --force
+   ```
+
+---
+
+### **Resultado Esperado:**
+
+Después de realizar estos pasos, las fechas de tus commits en GitHub deberían reflejarse correctamente y aparecerán en el gráfico de contribuciones, mostrando tu actividad con las fechas correctas.
+
+---
+
+Si algo no queda claro o necesitas más ayuda, no dudes en preguntar. ¡Buena suerte con los commits! 🚀
+
+---
