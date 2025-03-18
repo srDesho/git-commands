@@ -1,0 +1,127 @@
+Aquí tienes la documentación adaptada para Git Bash:
+
+## **Título: Corregir las Fechas de los Commits en Git para Mostrar Contribuciones Correctas en GitHub**
+
+**Concepto:**
+GitHub utiliza las fechas de los commits para calcular tu actividad y mostrar tus contribuciones en el gráfico de contribuciones. Si las fechas de los commits están desordenadas o no son correctas, esto puede afectar cómo se muestran tus contribuciones, incluso si los archivos están presentes en el repositorio. Si has tenido problemas con las fechas de tus commits, como no verlos en los cuadritos de contribuciones de GitHub, esta es una forma de corregirlas sin alterar el contenido ni el historial más de lo necesario.
+
+---
+
+### **Pasos para Corregir las Fechas de los Commits**
+
+#### **1. Verificar las Fechas del Commit y del Autor**
+
+Antes de proceder con la corrección de las fechas, es importante identificar si realmente hay un desajuste entre las fechas del *committer* (la fecha en la que se hizo el commit) y las fechas del *author* (la fecha en la que se creó el cambio). GitHub puede estar tomando la fecha del *author* al calcular tus contribuciones.
+
+Para visualizar las fechas de tus commits, puedes usar los siguientes comandos en Git Bash:
+
+**Ver la fecha del committer (fecha cuando se realizó el commit):**
+
+```bash
+git log --pretty=format:"%h - %an, %ad : %s" --date=format:"%Y-%m-%d %H:%M:%S"
+```
+
+**Ver la fecha del autor (fecha cuando se creó el cambio):**
+
+```bash
+git log --pretty=format:"%h - %an, %ad - %cn, %cd : %s" --date=format:"%Y-%m-%d %H:%M:%S"
+```
+
+Si ves que las fechas de *committer* y *author* son diferentes, puede ser necesario que corrijas las fechas de los commits.
+
+---
+
+#### **2. Iniciar el Rebase Interactivo**
+
+Ejecuta el siguiente comando en Git Bash para iniciar un rebase interactivo:
+
+```bash
+git rebase -i HEAD~12
+```
+
+Esto abrirá un editor de texto con una lista de los últimos 12 commits. Puedes cambiar el número `12` por la cantidad de commits que necesitas corregir.
+
+---
+
+#### **3. Cambiar "pick" por "edit" para los Commits a Corregir**
+
+En el editor que se abre, cambia "pick" por "edit" en los commits cuyas fechas deseas modificar. Por ejemplo:
+
+```bash
+edit 00b9aba Delete Ejercicios 8, 9, 10 y 11
+edit 314b3bb Ejercicio 7, Metodo para verificar si un nro es primo
+edit ee88c73 Ejericios 5 y 6
+...
+```
+
+Guarda y cierra el archivo.
+
+---
+
+#### **4. Actualizar la Fecha de Cada Commit**
+
+Ahora Git se detendrá en el primer commit que marcaste como "edit". Para corregir la fecha del commit, usa el siguiente comando en Git Bash:
+
+```bash
+GIT_COMMITTER_DATE="2025-02-04 22:36:32 -0400" git commit --amend --no-edit --date "2025-02-04 22:36:32 -0400"
+```
+
+Asegúrate de reemplazar `2025-02-04 22:36:32 -0400` con la fecha correcta para ese commit. Luego, sigue con el rebase ejecutando:
+
+```bash
+git rebase --continue
+```
+
+Git continuará con el siguiente commit y te permitirá modificar su fecha. Repite este paso para cada uno de los commits que seleccionaste para editar.
+
+---
+
+#### **5. Forzar el Push a GitHub**
+
+Una vez que hayas editado todas las fechas, sube los cambios a GitHub con:
+
+```bash
+git push --force
+```
+
+**¡Atención!** El uso de `--force` sobrescribirá el historial de commits en el repositorio remoto. Asegúrate de que todo esté correcto antes de ejecutar este comando.
+
+---
+
+### **Resumen de los Comandos:**
+
+1. **Iniciar Rebase Interactivo:**
+   ```bash
+   git rebase -i HEAD~12
+   ```
+
+2. **Cambiar "pick" por "edit" en el editor para los commits que deseas corregir.**
+
+3. **Actualizar la Fecha de Cada Commit:**
+   ```bash
+   GIT_COMMITTER_DATE="FECHA_CORRECTA" git commit --amend --no-edit --date "FECHA_CORRECTA"
+   ```
+
+4. **Continuar con el Rebase:**
+   ```bash
+   git rebase --continue
+   ```
+
+5. **Subir los Cambios a GitHub (Forzar el Push):**
+   ```bash
+   git push --force
+   ```
+
+---
+
+### **Resultado Esperado:**
+
+Después de realizar estos pasos, las fechas de tus commits en GitHub deberían reflejarse correctamente y aparecerán en el gráfico de contribuciones, mostrando tu actividad con las fechas correctas.
+
+---
+
+Si algo no queda claro o necesitas más ayuda, no dudes en preguntar. ¡Buena suerte con los commits! 🚀
+
+
+
+Aquí tienes la documentación adaptada para Git Bash. Si necesitas ajustes adicionales, dime y lo mejoramos. 🚀
