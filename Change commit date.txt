@@ -1,0 +1,86 @@
+Aquí tienes un **resumen claro y paso a paso** sobre cómo cambiar la fecha de un commit en Windows usando PowerShell, incluyendo los problemas que encontramos y sus soluciones.  
+
+---
+
+## 🎯 **Objetivo**  
+Cambiar la fecha del commit `6db197d12a86609ee621264db4ba3941a66de303` sin perder los commits más recientes.  
+
+---
+
+## 🔄 **Paso a paso**  
+
+### 1️⃣ **Iniciar el rebase interactivo**  
+Ejecutamos el siguiente comando para modificar los últimos 6 commits:  
+```powershell
+git rebase -i HEAD~6
+```
+> 🔴 **Problema:** Nos apareció un mensaje diciendo que había un rebase en curso.  
+> 🔹 **Solución:** Abortamos el rebase con:  
+```powershell
+git rebase --abort
+```  
+> Luego, volvimos a ejecutar el comando `git rebase -i HEAD~6`.
+
+### 2️⃣ **Editar el commit deseado**  
+- Se abrió el editor (VS Code en tu caso).  
+- En la lista de commits, cambiamos `pick` por `edit` en la línea del commit con el hash `6db197d12a86609ee621264db4ba3941a66de303`.  
+- Guardamos y cerramos el editor.
+
+### 3️⃣ **Modificar la fecha del commit**  
+En PowerShell, ejecutamos lo siguiente:  
+```powershell
+$env:GIT_COMMITTER_DATE="Thu Jan 23 16:58:40 2025 -0400"
+git commit --amend --date="Thu Jan 23 16:58:40 2025 -0400"
+```
+> 🔹 Esto cambia la fecha del commit sin modificar su contenido.  
+
+También verificamos los commits con:  
+```powershell
+git log --pretty=format:"%h %ad" --date=iso
+```
+> 🔹 Esto nos permitió ver que la fecha había cambiado correctamente.  
+
+### 4️⃣ **Continuar con el rebase**  
+Ejecutamos:  
+```powershell
+git rebase --continue
+```
+> 🔴 **Problema:** Nos apareció un **conflicto** en `ExampleTest.java`.  
+> 🔹 **Solución:**  
+1. Abrimos el archivo, resolvimos el conflicto manualmente.  
+2. Marcamos el archivo como resuelto:  
+   ```powershell
+   git add review-1/java-testing-junit-2/src/test/java/com/cristianml/ExampleTest.java
+   ```
+3. Continuamos con el rebase:  
+   ```powershell
+   git rebase --continue
+   ```
+
+### 5️⃣ **Forzar el push a GitHub**  
+Finalmente, actualizamos el repositorio en GitHub con:  
+```powershell
+git push --force
+```
+> 🔹 Esto sobrescribió el historial de commits en GitHub y **eliminó el commit con la fecha incorrecta** del historial visible.
+
+---
+
+## ✅ **Resultado Final**  
+- Se cambió la fecha del commit con éxito.  
+- No se eliminaron los commits recientes.  
+- El commit con la fecha incorrecta **desapareció de GitHub**.  
+
+---
+
+## 🔥 **Notas Finales**  
+📌 **Si hay un conflicto durante el rebase,** siempre debes:  
+1. Editar y corregir los archivos en conflicto.  
+2. Usar `git add <archivo>` para marcarlos como resueltos.  
+3. Ejecutar `git rebase --continue` hasta completar el proceso.  
+
+📌 **El comando `git push --force` es peligroso** si trabajas en equipo, ya que sobrescribe el historial remoto. En este caso, estaba bien porque trabajas solo.  
+
+---
+
+Este es el método exacto que usamos, paso a paso. Ahora puedes repetirlo sin problemas en el futuro. 🚀
